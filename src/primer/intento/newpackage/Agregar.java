@@ -11,6 +11,7 @@ package primer.intento.newpackage;
  */
 public class Agregar extends javax.swing.JFrame {
 
+    //aqui tambien modifique, revisa tu log
     /**
      * Creates new form Agregar
      */

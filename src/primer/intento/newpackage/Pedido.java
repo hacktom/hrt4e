@@ -5,6 +5,7 @@
  */
 package primer.intento.newpackage;
 //hola tadeo estos son mis cambios
+// a que onda richi, tambien voy a modificar la clase Agregar, atento!! <3
 /**
  *
  * @author Hacktom
