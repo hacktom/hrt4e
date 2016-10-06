@@ -1,4 +1,4 @@
-package com.hotel.hotel.models;
+package com.hoteles.hrt4e.models;
 
 import java.io.Serializable;
 
@@ -12,6 +12,20 @@ public class Usuario implements Serializable{
     private String nombre;
     private int idRol;
     private String rol;
+    private int edad;
+    
+    public int getEdad(){
+        return edad;
+    }
+    public void setEdad(int edad){
+       if(edad>100){
+           System.out.println("La edad debe ser menor a 100");
+       }
+       else if (edad<0){
+           System.out.println("La edad debe ser mayo a 0 ");
+       }
+       else    this.edad = edad;
+    }
 
     public int getId() {
         return id;

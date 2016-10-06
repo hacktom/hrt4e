@@ -1,4 +1,4 @@
-package com.hotel.hotel.models;
+package com.hoteles.hrt4e.models;
 
 import java.io.Serializable;
 

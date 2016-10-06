@@ -6,7 +6,7 @@
 package com.hoteles.hrt4e.threads;
 
 import com.caronte.json.JSONObject;
-import com.hotel.hotel.models.Usuario;
+import com.hoteles.hrt4e.models.Usuario;
 import com.hoteles.hrt4e.ws.WebServices;
 
 /**

@@ -15,6 +15,7 @@ import java.util.Random;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import com.hoteles.hrt4e.models.Usuario;
 
 public class Principal extends javax.swing.JFrame {
 
@@ -25,7 +26,10 @@ public class Principal extends javax.swing.JFrame {
 
     public Principal() {
         initComponents();
-        
+    Usuario miUsuario = new Usuario();    
+    miUsuario.setEdad(25);
+    
+    System.out.println("Edad: "+miUsuario.getEdad());
     
         TareaLogin tarea = new TareaLogin("hacktom", "hacktom");
         tarea.setOnPostExecuteListener(new Tarea.OnPostExecuteListener() {
