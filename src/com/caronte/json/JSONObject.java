@@ -1,6 +1,7 @@
 package com.caronte.json;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
@@ -142,29 +143,80 @@ public class JSONObject
 
 		return buffer.toString();
 	}
-	
-	public Object getInt(String name){
+        
+        
+        
+	public Integer getInt(String name){
 		JSONPair jsonPair = new JSONPair();
 		jsonPair.setString(name);
-		jsonPair.setValue(null);
 		int index = members.indexOf(jsonPair);
-                System.out.println("getInt index: "+index);
-                JSONValueType type = members.get(index).getValue().getType();
+                JSONValue value = members.get(index).getValue();
                 
-                if(type == JSONValueType.INTEGER){
-                    return members.get(index).getValue().getValue();
+                try{
+                    return ((BigInteger)value.getValue()).intValue();
+                }catch(ClassCastException e){
+                    System.out.println("getInt ClassCastException value: "+value.getValue());
+                    return 0;
                 }
-		
-                return null;
+	}
+        
+        public Double getDouble(String name){
+		JSONPair jsonPair = new JSONPair();
+		jsonPair.setString(name);
+		int index = members.indexOf(jsonPair);
+                JSONValue value = members.get(index).getValue();
+                
+                try{
+                    return ((BigDecimal)value.getValue()).doubleValue();
+                }catch(ClassCastException e){
+                    try{return ((BigInteger)value.getValue()).doubleValue();
+                    }catch(ClassCastException e1){
+                        return 0.0;
+                    }
+                                    
+                }
 	}
         
         public String getString(String name){
 		JSONPair jsonPair = new JSONPair();
 		jsonPair.setString(name);
-		jsonPair.setValue(null);
 		int index = members.indexOf(jsonPair);
-		return (String)members.get(index).getValue().getValue();
+                try{
+                    return (String)members.get(index).getValue().getValue();
+                }catch(ClassCastException e){
+                    System.out.println("getString ClassCastException");
+                    return "";
+                }
+		
 	}
+        
+        public JSONObject getJSONObject(String name){
+                JSONPair jsonPair = new JSONPair();
+		jsonPair.setString(name);
+                int index = members.indexOf(jsonPair);
+                
+                try{
+                    return (JSONObject)members.get(index).getValue().getValue();
+                }catch(ClassCastException e){
+                    System.out.println("getJSONObject ClassCastException");
+                    return null;
+                }
+        }
+        
+        public ArrayList<JSONObject> getJSONArray(String name){
+                JSONPair jsonPair = new JSONPair();
+		jsonPair.setString(name);
+                int index = members.indexOf(jsonPair);
+                
+                try{
+                    return (ArrayList<JSONObject>)members.get(index).getValue().getValue();
+                }catch(ClassCastException e){
+                    System.out.println("getJSONArray ClassCastException");
+                    return null;
+                }
+                
+              
+        }
        
 	
 	private String toString(Integer indentation, ArrayList<JSONPair> members)

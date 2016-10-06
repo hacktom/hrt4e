@@ -36,12 +36,9 @@ public class TareaLogin extends Tarea{
     
         if(jsonObject!=null){
             try {
-                Object code = jsonObject.getInt("code");
+                Integer code = jsonObject.getInt("code");
+                if(code==1){
 
-                System.out.println("TareaLogin: "+code);
-                /*if(code==1){
-
-                    
                     JSONObject usuarioJson = jsonObject.getJSONObject("usuario");
                     Usuario usuario = new Usuario();
                     usuario.setId(usuarioJson.getInt("id"));
@@ -51,14 +48,9 @@ public class TareaLogin extends Tarea{
 
 
                     if(onPostExecuteListener!=null){
-                        onPostExecuteListener.onPostExecute(null);
+                        onPostExecuteListener.onPostExecute(usuario);
                     }
-
-                }*/
-
-
-
-
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

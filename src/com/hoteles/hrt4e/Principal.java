@@ -1,5 +1,7 @@
 package com.hoteles.hrt4e;
 
+import com.hoteles.hrt4e.models.Catalogos;
+import com.hoteles.hrt4e.models.Habitacion;
 import com.hoteles.hrt4e.threads.Tarea;
 import com.hoteles.hrt4e.threads.TareaLogin;
 import com.hoteles.hrt4e.ws.WebServices;
@@ -16,43 +18,28 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import com.hoteles.hrt4e.models.Usuario;
+import com.hoteles.hrt4e.threads.TareaCatalogos;
+import com.hoteles.hrt4e.threads.TareaCatalogosWorker;
+import com.hoteles.hrt4e.utils.Singleton;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
-public class Principal extends javax.swing.JFrame {
-
-    /**
-     * Creates new form NewJFrame
-     */
-    private ArrayList<JPanel> habitaciones;
+public class Principal extends javax.swing.JFrame implements MouseListener {
 
     public Principal() {
         initComponents();
-    Usuario miUsuario = new Usuario();    
-    miUsuario.setEdad(25);
-    
-    System.out.println("Edad: "+miUsuario.getEdad());
-    
-        TareaLogin tarea = new TareaLogin("hacktom", "hacktom");
-        tarea.setOnPostExecuteListener(new Tarea.OnPostExecuteListener() {
-
-            @Override
-            public void onPostExecute(Object object) {
-            }
-        });
-        new Thread(tarea).start();
-       /* new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                WebServices.servicioCatalogos();
-            }
-        }).start();*/
-
+        
         addComponentListener(new ComponentListener() {
 
             @Override
             public void componentResized(ComponentEvent e) {
+                if (Singleton.getInstance().getHabitaciones() != null) {
+                    addViews(10, 10, 10, Singleton.getInstance().getHabitaciones());
+                }
 
-                addViews(10, 10, 10,70);
             }
 
             @Override
@@ -72,81 +59,101 @@ public class Principal extends javax.swing.JFrame {
         });
 
         setExtendedState(MAXIMIZED_BOTH);
-
-        habitaciones = new ArrayList<>();
-
-        addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-
-            }
+        
+        Thread refresh = new Thread(new Runnable() {
 
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void run() {
 
-            }
+                while (true) {
+                   
+                    TareaCatalogosWorker wor = new TareaCatalogosWorker();
+                    wor.setOnPostExecuteListener(new TareaCatalogosWorker.OnPostExecuteListener() {
 
-            @Override
-            public void mouseReleased(MouseEvent e) {
+                        @Override
+                        public void onPostExecute(Object object) {
+                            if (object instanceof Catalogos) {
 
-            }
+                                System.out.println("actualizando catalogos");
+                                Catalogos catalogos = (Catalogos) object;
+                                Singleton.getInstance().setHabitaciones(catalogos.getHabitaciones());
 
-            @Override
-            public void mouseEntered(MouseEvent e) {
+                                addViews(10, 10, 10, catalogos.getHabitaciones());
 
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
+                            }
+                        }
+                    });
+                    wor.execute();
+                    
+                     try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }
         });
+        
+        refresh.start();
 
     }
 
-    private void addViews(int margen,int cantidadHorizontal, int cantidadVertical,int total) {
+    private void addViews(int margen, int cantidadHorizontal, int cantidadVertical, ArrayList<Habitacion> habitaciones) {
+
         jPanel1.removeAll();
         int altoGeneral = ((jPanel1.getHeight() - ((cantidadVertical + 1) * margen)) / cantidadVertical);
         int anchoGeneral = ((jPanel1.getWidth() - ((cantidadHorizontal + 1) * margen)) / cantidadHorizontal);
         int margenInitAlto = margen;
         int margenInitAncho = margen;
         int contador = 0;
-        
-        Random rand = new Random();
+
+
         for (int i = 0; i < cantidadVertical; i++) {
 
             int altoActual = margenInitAlto + (altoGeneral * i);
             margenInitAncho = margen;
             for (int j = 0; j < cantidadHorizontal; j++) {
 
-                
-                if(contador<total){
-                
+                if (contador < habitaciones.size()) {
+
                     int anchoActual = margenInitAncho + (anchoGeneral * j);
 
                     JPanel panel = new JPanel();
-                    panel.setBackground(new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255)));
-                    panel.setBounds(anchoActual, altoActual, anchoGeneral, altoGeneral);
-                    JLabel label = new JLabel((i*cantidadHorizontal)+(j+1)+"");
+                    int estado = habitaciones.get(contador).getEstado();
+                    if (estado == 1) {
+                        panel.setBackground(new Color(1, 223, 1));
+                    } else if (estado == 2) {
+                        panel.setBackground(new Color(239, 127, 42));
+                    } else {
+                        panel.setBackground(new Color(102, 102, 102));
+                    }
 
-                    int lenghtLabel = label.getText().length()*3;
-                    label.setBounds((panel.getWidth()/2)-lenghtLabel,0, panel.getWidth(), panel.getHeight());
+                    panel.setBounds(anchoActual, altoActual, anchoGeneral, altoGeneral);
+                    JLabel label = new JLabel((i * cantidadHorizontal) + (j + 1) + "");
+
+                    int lenghtLabel = label.getText().length() * 3;
+                    label.setBounds((panel.getWidth() / 2) - lenghtLabel, 0, panel.getWidth(), panel.getHeight());
                     panel.add(label);
+                    panel.addMouseListener(this);
                     margenInitAncho += margen;
                     jPanel1.add(panel);
-                }else{
-                    return;
                 }
-               
+
                 contador++;
-               
+
             }
 
             margenInitAlto += margen;
 
         }
 
+        jPanel1.repaint();
+        //add(jPanel1);
+        //repaint();
+        //invalidate();
+
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -204,6 +211,11 @@ public class Principal extends javax.swing.JFrame {
         });
 
         jButton1.setText("Buscar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Recepcionista:");
 
@@ -380,6 +392,12 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -441,4 +459,28 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        JPanel panel = (JPanel) e.getComponent();
+        JLabel label = (JLabel) panel.getComponent(0);
+        String text = label.getText();
+        System.out.println("text: " + text);
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
 }
