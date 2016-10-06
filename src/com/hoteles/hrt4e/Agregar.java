@@ -16,6 +16,8 @@ public class Agregar extends javax.swing.JFrame {
      * Creates new form Agregar
      */
     String cantidad;
+    String costo;
+    String producto;
     public Agregar() {
         initComponents();
       
@@ -43,6 +45,12 @@ public class Agregar extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        textFieldCantidad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldCantidadActionPerformed(evt);
+            }
+        });
 
         textFieldProducto.setToolTipText("");
 
@@ -131,7 +139,20 @@ public class Agregar extends javax.swing.JFrame {
          cantidad =textFieldCantidad.getText(); 
         int cantidadNumero = Integer.parseInt(cantidad);
         System.out.println("Cantidad: "+cantidad);
+        ////////////////////////////////////////////////////////
+               costo =textFieldCosto.getText(); 
+        int costoNumero = Integer.parseInt(costo);
+        System.out.println("Costo: "+costo);
+        ////////////////////////////////////////////////////////
+            producto =textFieldProducto.getText(); 
+        
+        System.out.println("Producto : "+producto);
+        
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void textFieldCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldCantidadActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textFieldCantidadActionPerformed
 
     /**
      * @param args the command line arguments
