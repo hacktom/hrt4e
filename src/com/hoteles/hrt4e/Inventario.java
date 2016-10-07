@@ -107,6 +107,7 @@ public class Inventario extends javax.swing.JFrame {
         AgregarProducto agregarProducto = new AgregarProducto();
                 agregarProducto.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                     agregarProducto.setVisible(true); 
+                    agregarProducto.setLocationRelativeTo(null);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
