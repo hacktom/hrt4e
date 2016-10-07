@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.WindowConstants;
 
 public class Principal extends javax.swing.JFrame implements MouseListener {
 
@@ -324,6 +325,11 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
         jMenu2.setText("Contabilidad");
 
         jMenuItem3.setText("Balance");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem3);
 
         jMenuBar1.add(jMenu2);
@@ -331,9 +337,19 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
         jMenu3.setText("Clientes");
 
         jMenuItem4.setText("Dar de alta");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem4);
 
         jMenuItem5.setText("Ver lista");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem5);
 
         jMenuBar1.add(jMenu3);
@@ -377,11 +393,16 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
+                Inventario inventario = new Inventario();
+                inventario.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                    inventario.setVisible(true);       
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
+                Pedido pedido = new Pedido();
+                pedido.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                    pedido.setVisible(true);           
+               
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
@@ -397,6 +418,24 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
         
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+       Balance balance = new Balance();
+                balance.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                    balance.setVisible(true);       
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        AgregarCliente agregarCliente = new AgregarCliente();
+                agregarCliente.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                    agregarCliente.setVisible(true);       
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+       ListaClientes listaClientes = new ListaClientes();
+                listaClientes.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                    listaClientes.setVisible(true);       
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**
      * @param args the command line arguments

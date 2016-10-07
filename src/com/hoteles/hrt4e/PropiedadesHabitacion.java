@@ -5,6 +5,8 @@
  */
 package com.hoteles.hrt4e;
 
+import javax.swing.WindowConstants;
+
 /**
  *
  * @author Hacktom
@@ -93,6 +95,11 @@ public class PropiedadesHabitacion extends javax.swing.JFrame {
         jLabel12.setText("YMQD21");
 
         jButton1.setText("Facturar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Cancelar");
 
@@ -356,6 +363,12 @@ public class PropiedadesHabitacion extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        ListaClientes listaClientes = new ListaClientes();
+                listaClientes.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                    listaClientes.setVisible(true); 
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
