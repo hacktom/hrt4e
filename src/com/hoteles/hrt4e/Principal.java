@@ -32,7 +32,7 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
 
     public Principal() {
         initComponents();
-        
+
         addComponentListener(new ComponentListener() {
 
             @Override
@@ -60,14 +60,14 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
         });
 
         setExtendedState(MAXIMIZED_BOTH);
-        
+
         Thread refresh = new Thread(new Runnable() {
 
             @Override
             public void run() {
 
                 while (true) {
-                   
+
                     TareaCatalogosWorker wor = new TareaCatalogosWorker();
                     wor.setOnPostExecuteListener(new TareaCatalogosWorker.OnPostExecuteListener() {
 
@@ -85,8 +85,8 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
                         }
                     });
                     wor.execute();
-                    
-                     try {
+
+                    try {
                         Thread.sleep(5000);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -94,7 +94,7 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
                 }
             }
         });
-        
+
         refresh.start();
 
     }
@@ -107,7 +107,6 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
         int margenInitAlto = margen;
         int margenInitAncho = margen;
         int contador = 0;
-
 
         for (int i = 0; i < cantidadVertical; i++) {
 
@@ -154,7 +153,6 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
         //invalidate();
 
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -393,16 +391,18 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-                Inventario inventario = new Inventario();
-                inventario.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-                    inventario.setVisible(true);       
+        Inventario inventario = new Inventario();
+        inventario.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        inventario.setVisible(true);
+        inventario.setLocationRelativeTo(null);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-                Pedido pedido = new Pedido();
-                pedido.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-                    pedido.setVisible(true);           
-               
+        Pedido pedido = new Pedido();
+        pedido.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        pedido.setVisible(true);
+        pedido.setLocationRelativeTo(null);
+
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
@@ -415,26 +415,28 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-       Balance balance = new Balance();
-                balance.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-                    balance.setVisible(true);       
+        Balance balance = new Balance();
+        balance.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        balance.setVisible(true);
+        balance.setLocationRelativeTo(null);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         AgregarCliente agregarCliente = new AgregarCliente();
-                agregarCliente.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-                    agregarCliente.setVisible(true);       
+        agregarCliente.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        agregarCliente.setVisible(true);
+        agregarCliente.setLocationRelativeTo(null);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-       ListaClientes listaClientes = new ListaClientes();
-                listaClientes.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-                    listaClientes.setVisible(true);       
+        ListaClientes listaClientes = new ListaClientes();
+        listaClientes.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        listaClientes.setVisible(true);
+        listaClientes.setLocationRelativeTo(null);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**
