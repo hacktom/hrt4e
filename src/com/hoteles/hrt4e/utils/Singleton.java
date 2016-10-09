@@ -42,6 +42,14 @@ public class Singleton {
     public ArrayList<Habitacion> getHabitaciones(){
         return this.habitaciones;
     }
+    
+    public Habitacion buscarNumeroHabitacion(int numero){
+        for(Habitacion habitacion: habitaciones){
+            if(habitacion.getNumeroHabitacion()==numero)
+                return habitacion;
+        }
+        return null;
+    }
 
     public ArrayList<Habitacion> getHabitacionesTipo(int idTipoHabitacion){
 

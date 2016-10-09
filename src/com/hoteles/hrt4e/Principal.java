@@ -2,6 +2,7 @@ package com.hoteles.hrt4e;
 
 import com.hoteles.hrt4e.models.Catalogos;
 import com.hoteles.hrt4e.models.Habitacion;
+import com.hoteles.hrt4e.models.HabitacionRenta;
 import com.hoteles.hrt4e.threads.Tarea;
 import com.hoteles.hrt4e.threads.TareaLogin;
 import com.hoteles.hrt4e.ws.WebServices;
@@ -20,6 +21,8 @@ import javax.swing.SwingConstants;
 import com.hoteles.hrt4e.models.Usuario;
 import com.hoteles.hrt4e.threads.TareaCatalogos;
 import com.hoteles.hrt4e.threads.TareaCatalogosWorker;
+import com.hoteles.hrt4e.threads.TareaDetalleHabitacionWorker;
+import com.hoteles.hrt4e.threads.Worker;
 import com.hoteles.hrt4e.utils.Singleton;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -32,7 +35,12 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
 
     public Principal() {
         initComponents();
+        
+        //jPanel3.removeAll();
+        
+       
 
+        jPanel3.setVisible(true);
         addComponentListener(new ComponentListener() {
 
             @Override
@@ -494,6 +502,24 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
         JLabel label = (JLabel) panel.getComponent(0);
         String text = label.getText();
         System.out.println("text: " + text);
+        
+        Habitacion hab = Singleton.getInstance().buscarNumeroHabitacion(Integer.parseInt(text));
+        System.out.println("hab: "+hab.getNumeroHabitacion());
+        System.out.println("estado: "+hab.getEstado());
+        
+        TareaDetalleHabitacionWorker tarea = new TareaDetalleHabitacionWorker(hab.getNumeroHabitacion());
+        tarea.setOnPostExecuteListener(new Worker.OnPostExecuteListener() {
+
+            @Override
+            public void onPostExecute(Object object) {
+                HabitacionRenta habitacionRenta = (HabitacionRenta)object;
+                System.out.println("modelo: "+habitacionRenta.getModelo());
+            }
+        });
+        tarea.execute();
+        
+        //PropiedadesHabitacion pro = new PropiedadesHabitacion();
+        
     }
 
     @Override

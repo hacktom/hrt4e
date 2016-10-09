@@ -21,14 +21,7 @@ import javax.swing.SwingWorker;
  *
  * @author Tadeo-developer
  */
-public class TareaCatalogosWorker extends SwingWorker<JSONObject, Void> {
-
-    public interface OnPostExecuteListener {
-
-        void onPostExecute(Object object);
-    }
-
-    protected OnPostExecuteListener onPostExecuteListener;
+public class TareaCatalogosWorker extends Worker {
 
     @Override
     protected JSONObject doInBackground() throws Exception {
@@ -107,14 +100,6 @@ public class TareaCatalogosWorker extends SwingWorker<JSONObject, Void> {
         } catch (ExecutionException ex) {
             Logger.getLogger(TareaCatalogosWorker.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public OnPostExecuteListener getOnPostExecuteListener() {
-        return onPostExecuteListener;
-    }
-
-    public void setOnPostExecuteListener(OnPostExecuteListener onPostExecuteListener) {
-        this.onPostExecuteListener = onPostExecuteListener;
     }
 
 }

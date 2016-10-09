@@ -110,4 +110,17 @@ public class Habitacion implements Serializable,Comparable<Habitacion> {
             return 0;
         }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        
+        int numHAbitacion = Integer.parseInt((String)obj);
+        
+        if(numeroHabitacion==numHAbitacion)
+            return true;
+        else
+            return false;
+    }
+    
+    
 }

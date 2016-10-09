@@ -52,11 +52,11 @@ public class WebServices {
         return request(URL_SERVIDOR+CATALOGOS,"",true,"POST");
     }
 
-    public static JSONObject servicioDetalleHabitacion(String idHabitacion){
+    public static JSONObject servicioDetalleHabitacion(int idHabitacion){
 
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.addPair("idHabitacion",Integer.parseInt(idHabitacion));
+            jsonObject.addPair("idHabitacion",idHabitacion);
         } catch (Exception e) {
             e.printStackTrace();
         }
