@@ -6,6 +6,9 @@
 package com.hoteles.hrt4e;
 //hola tadeo estos son mis cambios
 // a que onda richi, tambien voy a modificar la clase Agregar, atento!! <3
+
+import javax.swing.WindowConstants;
+
 /**
  *
  * @author Hacktom
@@ -159,7 +162,11 @@ public class Pedido extends javax.swing.JFrame {
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+              AgregarPedido2 agregarPedido2 = new AgregarPedido2();
+        agregarPedido2.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        agregarPedido2.setVisible(true);
+        agregarPedido2.setLocationRelativeTo(null);
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
