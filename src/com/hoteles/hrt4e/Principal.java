@@ -3,6 +3,8 @@ package com.hoteles.hrt4e;
 import com.hoteles.hrt4e.models.Catalogos;
 import com.hoteles.hrt4e.models.Habitacion;
 import com.hoteles.hrt4e.models.HabitacionRenta;
+import com.hoteles.hrt4e.models.HabitacionTipo;
+import com.hoteles.hrt4e.models.MiModelo;
 import com.hoteles.hrt4e.threads.Tarea;
 import com.hoteles.hrt4e.threads.TareaLogin;
 import com.hoteles.hrt4e.ws.WebServices;
@@ -37,7 +39,7 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
         initComponents();
         
         //jPanel3.removeAll();
-        
+       
        
 
         jPanel3.setVisible(true);
@@ -86,7 +88,14 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
                                 System.out.println("actualizando catalogos");
                                 Catalogos catalogos = (Catalogos) object;
                                 Singleton.getInstance().setHabitaciones(catalogos.getHabitaciones());
-
+                                MiModelo modelo = new MiModelo ();
+                                ArrayList<HabitacionTipo> habitacionesTipo = new ArrayList<>();
+                                habitacionesTipo.add(obtenerCantidadTipoHabitacion(1));
+                                habitacionesTipo.add(obtenerCantidadTipoHabitacion(2));
+                                
+                                
+                                modelo.habitaciones = habitacionesTipo;
+                                jTable1.setModel(modelo);
                                 addViews(10, 10, 10, catalogos.getHabitaciones());
 
                             }
@@ -252,7 +261,7 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -291,7 +300,7 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
                     .addComponent(jLabel7)
                     .addComponent(jButton1))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -537,4 +546,32 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
     }
+
+    public HabitacionTipo obtenerCantidadTipoHabitacion(int tipoHabitacion){
+        ArrayList<Habitacion> habitaciones = Singleton.getInstance().getHabitacionesTipo(tipoHabitacion);
+        HabitacionTipo habitacionTipo = new HabitacionTipo();
+        int contadorLimpias = 0;
+        int contadorOcupadas = 0;
+        int contadorSucias = 0;
+        
+         for(Habitacion hab: habitaciones){
+              if(hab.getEstado()== 1){
+                contadorLimpias++;
+              }
+              else if (hab.getEstado() == 2){
+                contadorOcupadas++;
+              }
+              else if (hab.getEstado ()== 3){
+                contadorSucias++;
+              }
+          }
+         if(habitaciones.size()>1){
+              habitacionTipo.setTipo(habitaciones.get(0).getTipoHabitacionText());
+         }
+         habitacionTipo.setCantidadLimpio(contadorLimpias);
+          habitacionTipo.setCantidadOcupado(contadorOcupadas);
+           habitacionTipo.setCantidadSucio(contadorSucias);
+        return habitacionTipo;
+    }
+    
 }
