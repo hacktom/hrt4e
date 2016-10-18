@@ -114,13 +114,23 @@ public class Habitacion implements Serializable,Comparable<Habitacion> {
     @Override
     public boolean equals(Object obj) {
         
-        int numHAbitacion = Integer.parseInt((String)obj);
-        
-        if(numeroHabitacion==numHAbitacion)
+        int numHabitacion = 0;
+        if(obj instanceof String){
+            numHabitacion = Integer.parseInt((String)obj);
+        }else if(obj instanceof Integer){
+            numHabitacion = (Integer)obj;
+        }else{
+            System.out.println("numHabitacion return false: ");
+            return false;
+        }
+        System.out.println("numHabitacion: "+numHabitacion);
+        if(numeroHabitacion==numHabitacion)
             return true;
         else
             return false;
     }
+
+    
     
     
 }

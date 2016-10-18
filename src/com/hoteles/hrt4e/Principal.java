@@ -24,8 +24,10 @@ import com.hoteles.hrt4e.models.Usuario;
 import com.hoteles.hrt4e.threads.TareaCatalogos;
 import com.hoteles.hrt4e.threads.TareaCatalogosWorker;
 import com.hoteles.hrt4e.threads.TareaDetalleHabitacionWorker;
+import com.hoteles.hrt4e.threads.TareaHabitacionesTransicionWorker;
 import com.hoteles.hrt4e.threads.Worker;
 import com.hoteles.hrt4e.utils.Singleton;
+import com.hoteles.hrt4e.utils.Utils;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,10 +40,10 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
     public Principal() {
         initComponents();
         
-        //jPanel3.removeAll();
-       
-       
+        Singleton.getInstance().setIdHotel(1);
+        Singleton.getInstance().setMacAddress(Utils.getMacAddress());
 
+        //jPanel3.removeAll();
         jPanel3.setVisible(true);
         addComponentListener(new ComponentListener() {
 
@@ -71,6 +73,35 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
 
         setExtendedState(MAXIMIZED_BOTH);
 
+        TareaCatalogosWorker wor = new TareaCatalogosWorker();
+        wor.setOnPostExecuteListener(new TareaCatalogosWorker.OnPostExecuteListener() {
+
+            @Override
+            public void onPostExecute(Object object) {
+                if (object instanceof Catalogos) {
+
+                    System.out.println("actualizando catalogos");
+                    Catalogos catalogos = (Catalogos) object;
+                    Singleton.getInstance().setHabitaciones(catalogos.getHabitaciones());
+                    MiModelo modelo = new MiModelo();
+                    ArrayList<HabitacionTipo> habitacionesTipo = new ArrayList<>();
+                    habitacionesTipo.add(obtenerCantidadTipoHabitacion(1));
+                    habitacionesTipo.add(obtenerCantidadTipoHabitacion(2));
+
+                    modelo.habitaciones = habitacionesTipo;
+                    jTable1.setModel(modelo);
+                    addViews(10, 10, 10, catalogos.getHabitaciones());
+                    
+                    initUpdates();
+
+                }
+            }
+        });
+        wor.execute();
+
+    }
+
+    private void initUpdates() {
         Thread refresh = new Thread(new Runnable() {
 
             @Override
@@ -78,25 +109,24 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
 
                 while (true) {
 
-                    TareaCatalogosWorker wor = new TareaCatalogosWorker();
-                    wor.setOnPostExecuteListener(new TareaCatalogosWorker.OnPostExecuteListener() {
+                    TareaHabitacionesTransicionWorker wor = new TareaHabitacionesTransicionWorker();
+                    wor.setOnPostExecuteListener(new TareaHabitacionesTransicionWorker.OnPostExecuteListener() {
 
                         @Override
                         public void onPostExecute(Object object) {
                             if (object instanceof Catalogos) {
 
-                                System.out.println("actualizando catalogos");
+                                System.out.println("actualizando habitaciones");
                                 Catalogos catalogos = (Catalogos) object;
-                                Singleton.getInstance().setHabitaciones(catalogos.getHabitaciones());
-                                MiModelo modelo = new MiModelo ();
+                                Singleton.getInstance().actualizarHabitaciones(catalogos.getHabitaciones());
+                                MiModelo modelo = new MiModelo();
                                 ArrayList<HabitacionTipo> habitacionesTipo = new ArrayList<>();
                                 habitacionesTipo.add(obtenerCantidadTipoHabitacion(1));
                                 habitacionesTipo.add(obtenerCantidadTipoHabitacion(2));
-                                
-                                
+
                                 modelo.habitaciones = habitacionesTipo;
                                 jTable1.setModel(modelo);
-                                addViews(10, 10, 10, catalogos.getHabitaciones());
+                                addViews(10, 10, 10, Singleton.getInstance().getHabitaciones());
 
                             }
                         }
@@ -113,7 +143,6 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
         });
 
         refresh.start();
-
     }
 
     private void addViews(int margen, int cantidadHorizontal, int cantidadVertical, ArrayList<Habitacion> habitaciones) {
@@ -511,24 +540,23 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
         JLabel label = (JLabel) panel.getComponent(0);
         String text = label.getText();
         System.out.println("text: " + text);
-        
+
         Habitacion hab = Singleton.getInstance().buscarNumeroHabitacion(Integer.parseInt(text));
-        System.out.println("hab: "+hab.getNumeroHabitacion());
-        System.out.println("estado: "+hab.getEstado());
-        
+        System.out.println("hab: " + hab.getNumeroHabitacion());
+        System.out.println("estado: " + hab.getEstado());
+
         TareaDetalleHabitacionWorker tarea = new TareaDetalleHabitacionWorker(hab.getNumeroHabitacion());
         tarea.setOnPostExecuteListener(new Worker.OnPostExecuteListener() {
 
             @Override
             public void onPostExecute(Object object) {
-                HabitacionRenta habitacionRenta = (HabitacionRenta)object;
-                System.out.println("modelo: "+habitacionRenta.getModelo());
+                HabitacionRenta habitacionRenta = (HabitacionRenta) object;
+                System.out.println("modelo: " + habitacionRenta.getModelo());
             }
         });
         tarea.execute();
-        
+
         //PropiedadesHabitacion pro = new PropiedadesHabitacion();
-        
     }
 
     @Override
@@ -547,31 +575,29 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
     public void mouseExited(MouseEvent e) {
     }
 
-    public HabitacionTipo obtenerCantidadTipoHabitacion(int tipoHabitacion){
+    public HabitacionTipo obtenerCantidadTipoHabitacion(int tipoHabitacion) {
         ArrayList<Habitacion> habitaciones = Singleton.getInstance().getHabitacionesTipo(tipoHabitacion);
         HabitacionTipo habitacionTipo = new HabitacionTipo();
         int contadorLimpias = 0;
         int contadorOcupadas = 0;
         int contadorSucias = 0;
-        
-         for(Habitacion hab: habitaciones){
-              if(hab.getEstado()== 1){
+
+        for (Habitacion hab : habitaciones) {
+            if (hab.getEstado() == 1) {
                 contadorLimpias++;
-              }
-              else if (hab.getEstado() == 2){
+            } else if (hab.getEstado() == 2) {
                 contadorOcupadas++;
-              }
-              else if (hab.getEstado ()== 3){
+            } else if (hab.getEstado() == 3) {
                 contadorSucias++;
-              }
-          }
-         if(habitaciones.size()>1){
-              habitacionTipo.setTipo(habitaciones.get(0).getTipoHabitacionText());
-         }
-         habitacionTipo.setCantidadLimpio(contadorLimpias);
-          habitacionTipo.setCantidadOcupado(contadorOcupadas);
-           habitacionTipo.setCantidadSucio(contadorSucias);
+            }
+        }
+        if (habitaciones.size() > 1) {
+            habitacionTipo.setTipo(habitaciones.get(0).getTipoHabitacionText());
+        }
+        habitacionTipo.setCantidadLimpio(contadorLimpias);
+        habitacionTipo.setCantidadOcupado(contadorOcupadas);
+        habitacionTipo.setCantidadSucio(contadorSucias);
         return habitacionTipo;
     }
-    
+
 }

@@ -19,6 +19,10 @@ public class Singleton {
     private Usuario usuario;
     private ArrayList<Habitacion> habitaciones;
     private ArrayList<Usuario> usuarios;
+    
+    private String macAddress;
+    
+    private int idHotel;
 
     public static Singleton getInstance(){
         if(singleton==null){
@@ -50,6 +54,14 @@ public class Singleton {
         }
         return null;
     }
+    
+    public int buscarIndiceNumeroHabitacion(int numero){
+        for(int i = 0;i<habitaciones.size();i++){
+            if(habitaciones.get(i).getNumeroHabitacion()==numero)
+                return i;
+        }
+        return -1;
+    }
 
     public ArrayList<Habitacion> getHabitacionesTipo(int idTipoHabitacion){
 
@@ -63,6 +75,26 @@ public class Singleton {
         }
 
         return aux;
+    }
+    
+    public void actualizarHabitaciones(ArrayList<Habitacion> habitaciones){
+        
+       /* for(int i = 0;i<habitaciones.size();i++){
+            
+            Habitacion hab = buscarNumeroHabitacion(habitaciones.get(i).getNumeroHabitacion());
+            hab = habitaciones.get(i);
+           
+            
+        }*/
+        
+        for(Habitacion habitacion : habitaciones){
+            int indexHabitacion = buscarIndiceNumeroHabitacion(habitacion.getNumeroHabitacion());
+            if(indexHabitacion>=0){
+                this.habitaciones.set(indexHabitacion,habitacion);
+            }
+        }
+        
+        
     }
 
     public void setHabitaciones(ArrayList<Habitacion> habitaciones){
@@ -89,4 +121,24 @@ public class Singleton {
         this.usuarios = usuarios;
     }
 
+    public String getMacAddress() {
+        return macAddress;
+    }
+
+    public void setMacAddress(String macAddress) {
+        this.macAddress = macAddress;
+    }
+
+    public int getIdHotel() {
+        return idHotel;
+    }
+
+    public void setIdHotel(int idHotel) {
+        this.idHotel = idHotel;
+    }
+    
+    
+
+    
+    
 }

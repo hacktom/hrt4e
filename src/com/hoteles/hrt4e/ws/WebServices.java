@@ -23,6 +23,7 @@ public class WebServices {
     public static final String URL_SERVIDOR = "http://www.luctadeveloper.com/hoteles/";
     public static final String LOGIN = "login.php";
     public static final String CATALOGOS = "catalogos.php";
+    public static final String HABITACIONES_TRANSICION = "habitaciones_transicion.php";
     public static final String DETALLE_HABITACION = "detalle_habitacion.php";
     public static final String CAMBIAR_ESTADO = "cambiar_estado.php";
     public static final String REGISTRAR_HABITACION = "registrar_habitacion.php";
@@ -47,9 +48,29 @@ public class WebServices {
             return request(URL_SERVIDOR+LOGIN,jsonObject.toString(),true,"POST");
     }
 
-    public static JSONObject servicioCatalogos(){
+    public static JSONObject servicioCatalogos(String idEquipo, int idHotel){
 
-        return request(URL_SERVIDOR+CATALOGOS,"",true,"POST");
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.addPair("idEquipo",idEquipo);
+            jsonObject.addPair("idHotel",idHotel);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return request(URL_SERVIDOR+CATALOGOS,jsonObject.toString(),true,"POST");
+    }
+    
+    public static JSONObject servicioHabitcionesTransicion(String idEquipo, int idHotel){
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.addPair("idEquipo",idEquipo);
+            jsonObject.addPair("idHotel",idHotel);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return request(URL_SERVIDOR+HABITACIONES_TRANSICION,jsonObject.toString(),true,"POST");
     }
 
     public static JSONObject servicioDetalleHabitacion(int idHabitacion){

@@ -9,6 +9,7 @@ import com.caronte.json.JSONObject;
 import com.hoteles.hrt4e.models.Catalogos;
 import com.hoteles.hrt4e.models.Habitacion;
 import com.hoteles.hrt4e.models.Usuario;
+import com.hoteles.hrt4e.utils.Singleton;
 import com.hoteles.hrt4e.ws.WebServices;
 import java.util.ArrayList;
 
@@ -25,7 +26,9 @@ public class TareaCatalogos extends Tarea{
     @Override
     public void run() {
     
-        JSONObject jsonObject = WebServices.servicioCatalogos();
+        String mac = Singleton.getInstance().getMacAddress();
+        int idHotel = Singleton.getInstance().getIdHotel();
+        JSONObject jsonObject = WebServices.servicioCatalogos(mac,idHotel);
         
         parseJson(jsonObject);
        

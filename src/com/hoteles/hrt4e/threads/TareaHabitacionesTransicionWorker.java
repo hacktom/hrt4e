@@ -22,13 +22,13 @@ import javax.swing.SwingWorker;
  *
  * @author Tadeo-developer
  */
-public class TareaCatalogosWorker extends Worker {
+public class TareaHabitacionesTransicionWorker extends Worker {
 
     @Override
     protected JSONObject doInBackground() throws Exception {
         String mac = Singleton.getInstance().getMacAddress();
         int idHotel = Singleton.getInstance().getIdHotel();
-        JSONObject jsonObject = WebServices.servicioCatalogos(mac,idHotel);
+        JSONObject jsonObject = WebServices.servicioHabitcionesTransicion(mac,idHotel);
 
         return jsonObject;
     }
@@ -66,24 +66,8 @@ public class TareaCatalogosWorker extends Worker {
 
                         }
 
-                        ArrayList<JSONObject> catalogoUsuario = jsonObject.getJSONArray("catalogo_usuario");
-
-                        ArrayList<Usuario> usuarios = new ArrayList<>();
-
-                        for (int i = 0; i < catalogoUsuario.size(); i++) {
-                            JSONObject usuarioJSon = catalogoUsuario.get(i);
-                            Usuario usuario = new Usuario();
-                            usuario.setId(usuarioJSon.getInt("id"));
-                            usuario.setNombre(usuarioJSon.getString("nombre"));
-                            usuario.setIdRol(usuarioJSon.getInt("id_rol"));
-                            usuario.setRol(usuarioJSon.getString("nombre_rol"));
-                            usuarios.add(usuario);
-
-                        }
-
                         Catalogos catalogos = new Catalogos();
                         catalogos.setHabitaciones(habitaciones);
-                        catalogos.setUsuarios(usuarios);
 
                         if (onPostExecuteListener != null) {
                             onPostExecuteListener.onPostExecute(catalogos);
@@ -99,9 +83,9 @@ public class TareaCatalogosWorker extends Worker {
                 System.out.println("TareaLogin jsonObject es null");
             }
         } catch (InterruptedException ex) {
-            Logger.getLogger(TareaCatalogosWorker.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TareaHabitacionesTransicionWorker.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ExecutionException ex) {
-            Logger.getLogger(TareaCatalogosWorker.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TareaHabitacionesTransicionWorker.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
