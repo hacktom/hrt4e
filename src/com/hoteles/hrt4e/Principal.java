@@ -28,15 +28,21 @@ import com.hoteles.hrt4e.threads.TareaHabitacionesTransicionWorker;
 import com.hoteles.hrt4e.threads.Worker;
 import com.hoteles.hrt4e.utils.Singleton;
 import com.hoteles.hrt4e.utils.Utils;
+import java.awt.Dimension;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.WindowConstants;
 
 public class Principal extends javax.swing.JFrame implements MouseListener {
 
+    private static final int MARGEN = 10;
+    private static final int CANTIDAD_HORIZONTAL = 10;
+    private static final int CANTIDAD_VERTICAL = 10;
+    
     public Principal() {
         initComponents();
         
@@ -50,7 +56,8 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
             @Override
             public void componentResized(ComponentEvent e) {
                 if (Singleton.getInstance().getHabitaciones() != null) {
-                    addViews(10, 10, 10, Singleton.getInstance().getHabitaciones());
+                    //addViews(MARGEN, CANTIDAD_HORIZONTAL, CANTIDAD_VERTICAL, Singleton.getInstance().getHabitaciones());
+                    addViews(MARGEN, CANTIDAD_HORIZONTAL, CANTIDAD_VERTICAL, genereateHabitacionesDummy(120));
                 }
 
             }
@@ -90,8 +97,8 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
 
                     modelo.habitaciones = habitacionesTipo;
                     jTable1.setModel(modelo);
-                    addViews(10, 10, 10, catalogos.getHabitaciones());
-                    
+                    //addViews(MARGEN, CANTIDAD_HORIZONTAL, CANTIDAD_VERTICAL, catalogos.getHabitaciones());
+                    addViews(MARGEN, CANTIDAD_HORIZONTAL, CANTIDAD_VERTICAL, genereateHabitacionesDummy(120));
                     initUpdates();
 
                 }
@@ -126,8 +133,8 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
 
                                 modelo.habitaciones = habitacionesTipo;
                                 jTable1.setModel(modelo);
-                                addViews(10, 10, 10, Singleton.getInstance().getHabitaciones());
-
+                                //addViews(MARGEN, CANTIDAD_HORIZONTAL, CANTIDAD_VERTICAL, Singleton.getInstance().getHabitaciones());
+                                addViews(MARGEN, CANTIDAD_HORIZONTAL, CANTIDAD_VERTICAL, genereateHabitacionesDummy(120));
                             }
                         }
                     });
@@ -144,15 +151,31 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
 
         refresh.start();
     }
+    
+    private ArrayList<Habitacion> genereateHabitacionesDummy(int cantidad){
+        ArrayList<Habitacion> habs = new ArrayList<>();
+        for(int i = 0;i<cantidad;i++){
+            Habitacion aux = new Habitacion();
+            aux.setNumeroHabitacion(i+1);
+            aux.setEstado(1);
+            habs.add(aux);
+        }
+        
+        return habs;
+    }
+    
+    
 
     private void addViews(int margen, int cantidadHorizontal, int cantidadVertical, ArrayList<Habitacion> habitaciones) {
 
         jPanel1.removeAll();
+        
+        
         int altoGeneral = ((jPanel1.getHeight() - ((cantidadVertical + 1) * margen)) / cantidadVertical);
         int anchoGeneral = ((jPanel1.getWidth() - ((cantidadHorizontal + 1) * margen)) / cantidadHorizontal);
         int margenInitAlto = margen;
         int margenInitAncho = margen;
-        int contador = 0;
+        int contadorHabitaciones = 0;
 
         for (int i = 0; i < cantidadVertical; i++) {
 
@@ -160,12 +183,12 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
             margenInitAncho = margen;
             for (int j = 0; j < cantidadHorizontal; j++) {
 
-                if (contador < habitaciones.size()) {
+                if (contadorHabitaciones < habitaciones.size()) {
 
                     int anchoActual = margenInitAncho + (anchoGeneral * j);
 
                     JPanel panel = new JPanel();
-                    int estado = habitaciones.get(contador).getEstado();
+                    int estado = habitaciones.get(contadorHabitaciones).getEstado();
                     if (estado == 1) {
                         panel.setBackground(new Color(1, 223, 1));
                     } else if (estado == 2) {
@@ -185,19 +208,22 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
                     jPanel1.add(panel);
                 }
 
-                contador++;
+                contadorHabitaciones++;
 
             }
+            
+            
 
             margenInitAlto += margen;
 
         }
-
+       
         jPanel1.repaint();
         //add(jPanel1);
         //repaint();
         //invalidate();
-
+        
+        
     }
 
     /**
@@ -209,6 +235,7 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane2 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
@@ -235,18 +262,20 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(255, 102, 102));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 896, Short.MAX_VALUE)
+            .addGap(0, 898, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 526, Short.MAX_VALUE)
+            .addGap(0, 534, Short.MAX_VALUE)
         );
+
+        jScrollPane2.setViewportView(jPanel1);
 
         jTextField1.setMinimumSize(new java.awt.Dimension(22, 20));
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -404,8 +433,7 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 902, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -414,10 +442,9 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addComponent(jScrollPane2)
         );
 
         pack();
@@ -530,6 +557,7 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
