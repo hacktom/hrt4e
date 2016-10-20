@@ -4,6 +4,7 @@ import com.hoteles.hrt4e.models.Catalogos;
 import com.hoteles.hrt4e.models.Habitacion;
 import com.hoteles.hrt4e.models.HabitacionRenta;
 import com.hoteles.hrt4e.models.HabitacionTipo;
+import com.hoteles.hrt4e.models.Margenes;
 import com.hoteles.hrt4e.models.MiModelo;
 import com.hoteles.hrt4e.threads.Tarea;
 import com.hoteles.hrt4e.threads.TareaLogin;
@@ -42,10 +43,10 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
     private static final int MARGEN = 10;
     private static final int CANTIDAD_HORIZONTAL = 10;
     private static final int CANTIDAD_VERTICAL = 10;
-    
+
     public Principal() {
         initComponents();
-        
+
         Singleton.getInstance().setIdHotel(1);
         Singleton.getInstance().setMacAddress(Utils.getMacAddress());
 
@@ -57,7 +58,8 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
             public void componentResized(ComponentEvent e) {
                 if (Singleton.getInstance().getHabitaciones() != null) {
                     //addViews(MARGEN, CANTIDAD_HORIZONTAL, CANTIDAD_VERTICAL, Singleton.getInstance().getHabitaciones());
-                    addViews(MARGEN, CANTIDAD_HORIZONTAL, CANTIDAD_VERTICAL, genereateHabitacionesDummy(120));
+                    //addViews(MARGEN, CANTIDAD_HORIZONTAL, CANTIDAD_VERTICAL, genereateHabitacionesDummy(120));
+                    initViewsVertical(Singleton.getInstance().getHabitaciones());
                 }
 
             }
@@ -98,7 +100,8 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
                     modelo.habitaciones = habitacionesTipo;
                     jTable1.setModel(modelo);
                     //addViews(MARGEN, CANTIDAD_HORIZONTAL, CANTIDAD_VERTICAL, catalogos.getHabitaciones());
-                    addViews(MARGEN, CANTIDAD_HORIZONTAL, CANTIDAD_VERTICAL, genereateHabitacionesDummy(120));
+                    //addViews(MARGEN, CANTIDAD_HORIZONTAL, CANTIDAD_VERTICAL, genereateHabitacionesDummy(120));
+                    initViewsVertical(catalogos.getHabitaciones());
                     initUpdates();
 
                 }
@@ -134,14 +137,15 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
                                 modelo.habitaciones = habitacionesTipo;
                                 jTable1.setModel(modelo);
                                 //addViews(MARGEN, CANTIDAD_HORIZONTAL, CANTIDAD_VERTICAL, Singleton.getInstance().getHabitaciones());
-                                addViews(MARGEN, CANTIDAD_HORIZONTAL, CANTIDAD_VERTICAL, genereateHabitacionesDummy(120));
+                                //addViews(MARGEN, CANTIDAD_HORIZONTAL, CANTIDAD_VERTICAL, genereateHabitacionesDummy(120));
+                                initViewsVertical(Singleton.getInstance().getHabitaciones());
                             }
                         }
                     });
                     wor.execute();
 
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(2500);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -151,26 +155,151 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
 
         refresh.start();
     }
+
+    private void initViewsVertical(ArrayList<Habitacion> habitaciones) {
+        jPanel1.removeAll();
+        Margenes margenes = new Margenes();
+        margenes.setMargenArriba(0);
+        margenes.setMargenDerecha(0);
+        margenes.setMargenAbajo(0);
+        margenes.setMargenIzquierda(0);
+        addViewsVertical(margenes, 10, separarNumeroHabitacionesInicioFin(habitaciones,39,75,true));
+        
+        
+        Margenes margenes2a = new Margenes();
+        margenes2a.setMargenArriba(2);
+        margenes2a.setMargenDerecha(0);
+        margenes2a.setMargenAbajo(0);
+        margenes2a.setMargenIzquierda(4);
+        addViewsVertical(margenes2a, 10, separarNumeroHabitacionesInicioFin(habitaciones,40,54,true));
+        
+        Margenes margenes2b = new Margenes();
+        margenes2b.setMargenArriba(16);
+        margenes2b.setMargenDerecha(0);
+        margenes2b.setMargenAbajo(0);
+        margenes2b.setMargenIzquierda(4);
+        addViewsVertical(margenes2b, 10, separarNumeroHabitacionesInicioFin(habitaciones,60,74,true));
+        
+        
+        
+        Margenes margenes3a = new Margenes();
+        margenes3a.setMargenArriba(2);
+        margenes3a.setMargenDerecha(0);
+        margenes3a.setMargenAbajo(0);
+        margenes3a.setMargenIzquierda(6);
+        addViewsVertical(margenes3a, 10, separarNumeroHabitacionesFinInicio(habitaciones,38,24,true));
+        
+        Margenes margenes3b = new Margenes();
+        margenes3b.setMargenArriba(16);
+        margenes3b.setMargenDerecha(0);
+        margenes3b.setMargenAbajo(0);
+        margenes3b.setMargenIzquierda(6);
+        addViewsVertical(margenes3b, 10, separarNumeroHabitacionesFinInicio(habitaciones,16,2,true));
+        
+        
+        Margenes margenes4 = new Margenes();
+        margenes4.setMargenArriba(0);
+        margenes4.setMargenDerecha(0);
+        margenes4.setMargenAbajo(0);
+        margenes4.setMargenIzquierda(10);
+        addViewsVertical(margenes4, 10, separarNumeroHabitacionesFinInicio(habitaciones,37,1,true));
+        
+        Margenes margenes5 = new Margenes();
+        margenes5.setMargenArriba(0);
+        margenes5.setMargenDerecha(0);
+        margenes5.setMargenAbajo(0);
+        margenes5.setMargenIzquierda(2);
+        addViewsHorizontal(margenes5, 10, separarNumeroHabitacionesFinInicio(habitaciones,83,76,false));
+    }
     
-    private ArrayList<Habitacion> genereateHabitacionesDummy(int cantidad){
-        ArrayList<Habitacion> habs = new ArrayList<>();
-        for(int i = 0;i<cantidad;i++){
-            Habitacion aux = new Habitacion();
-            aux.setNumeroHabitacion(i+1);
-            aux.setEstado(1);
-            habs.add(aux);
+    private ArrayList<Habitacion> separarNumeroHabitacionesInicioFin(ArrayList<Habitacion> habitaciones, int inicio, int fin, boolean par){
+    
+        ArrayList<Habitacion> habitacionesAux = new ArrayList<>();
+       
+        
+        for(int i = inicio;i<=fin;){
+            
+            for(Habitacion habitacion:habitaciones){
+                if(i==habitacion.getNumeroHabitacion()){
+                    habitacionesAux.add(habitacion);
+                }
+            }
+            
+            if(par)
+                i+=2;
+            else
+                i++;
+            
+           
         }
         
+        return habitacionesAux;
+        
+    }
+    
+    private ArrayList<Habitacion> separarNumeroHabitacionesFinInicio(ArrayList<Habitacion> habitaciones, int fin, int inicio, boolean par){
+    
+        ArrayList<Habitacion> habitacionesAux = new ArrayList<>();
+        
+        for(int i = fin;i>=inicio;){
+            
+            for(Habitacion habitacion:habitaciones){
+                if(i==habitacion.getNumeroHabitacion()){
+                    habitacionesAux.add(habitacion);
+                }
+            }
+            
+            if(par)
+                i-=2;
+            else
+                i--;
+            
+        }
+        
+        return habitacionesAux;
+        
+    }
+
+    private ArrayList<Habitacion> genereateHabitacionesDummyInicioFin(int inicio, int fin,boolean par) {
+        ArrayList<Habitacion> habs = new ArrayList<>();
+        for (int i = inicio; i <= fin;) {
+            Habitacion aux = new Habitacion();
+            aux.setNumeroHabitacion(i );
+            aux.setEstado(1);
+            habs.add(aux);
+            
+            if(par)
+                i+=2;
+            else
+                i++;
+        }
+
         return habs;
     }
     
     
+    
+    private ArrayList<Habitacion> genereateHabitacionesDummyFinInicio(int fin, int inicio, boolean par) {
+        ArrayList<Habitacion> habs = new ArrayList<>();
+        for (int i = fin; i >= inicio;) {
+            Habitacion aux = new Habitacion();
+            aux.setNumeroHabitacion(i);
+            aux.setEstado(1);
+            habs.add(aux);
+            
+            if(par)
+                i-=2;
+            else
+                i--;
+        }
+
+        return habs;
+    }
 
     private void addViews(int margen, int cantidadHorizontal, int cantidadVertical, ArrayList<Habitacion> habitaciones) {
 
         jPanel1.removeAll();
-        
-        
+
         int altoGeneral = ((jPanel1.getHeight() - ((cantidadVertical + 1) * margen)) / cantidadVertical);
         int anchoGeneral = ((jPanel1.getWidth() - ((cantidadHorizontal + 1) * margen)) / cantidadHorizontal);
         int margenInitAlto = margen;
@@ -211,19 +340,119 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
                 contadorHabitaciones++;
 
             }
-            
-            
 
             margenInitAlto += margen;
 
         }
-       
+
         jPanel1.repaint();
         //add(jPanel1);
         //repaint();
         //invalidate();
+
+    }
+
+    private void addViewsVertical(Margenes margenes, int separador, ArrayList<Habitacion> habitaciones) {
+
+        int cantidadHorizontal = 10;
+        int cantidadAlto = 20;
+        int margen = separador;
+        //int altoGeneral = (((jPanel1.getHeight() - ((cantidadVertical + 1) * margen)) - (marginTop + marginButtom)) / cantidadVertical);
+        int altoGeneral = ((jPanel1.getHeight() - ((cantidadAlto + 1) * margen))  / cantidadAlto);
+
+        //int anchoGeneral = (((jPanel1.getWidth() - ((cantidadHorizontal + 1) * margen)) - (marginLeft + marginRight)) / cantidadHorizontal);
+        int anchoGeneral = ((jPanel1.getWidth() - ((cantidadHorizontal + 1) * margen))  / cantidadHorizontal);
+
+        int marginTop = altoGeneral*margenes.getMargenArriba();
+        int marginButtom = altoGeneral*margenes.getMargenAbajo();
+        int marginLeft = anchoGeneral*margenes.getMargenIzquierda();
+        int marginRight = anchoGeneral*margenes.getMargenDerecha();
         
+       
+        int margenInitAlto = margen + marginTop;
+        int margenInitAncho = margen + marginLeft;
+
+        int anchoActual = margenInitAncho + (anchoGeneral * 0);
+        for (int i = 0; i < habitaciones.size(); i++) {
+            int altoActual = margenInitAlto + (altoGeneral * i);
+
+            //for (int j = 0; j < cantidadHorizontal; j++) {
+            // anchoActual = margenInitAncho + (anchoGeneral * j);
+            JPanel panel = new JPanel();
+            panel = getPanelEstado(panel, habitaciones.get(i).getEstado());
+            panel.setBounds(anchoActual, altoActual, anchoGeneral, altoGeneral);
+            JLabel label = new JLabel(habitaciones.get(i).getNumeroHabitacion()+"");
+
+            int lenghtLabel = label.getText().length() * 3;
+            label.setBounds((panel.getWidth() / 2) - lenghtLabel, 0, panel.getWidth(), panel.getHeight());
+            panel.add(label);
+            panel.addMouseListener(this);
+            //margenInitAncho += margen;
+            jPanel1.add(panel);
+
+            //}
+            margenInitAlto += margen;
+        }
+
+        jPanel1.repaint();
+    }
+    
+       private void addViewsHorizontal(Margenes margenes, int separador,  ArrayList<Habitacion> habitaciones) {
+
+        int cantidadHorizontal = 12;
+        int cantidadAlto = 20;
+        int margen = separador;
+        //int altoGeneral = (((jPanel1.getHeight() - ((cantidadVertical + 1) * margen)) - (marginTop + marginButtom)) / cantidadVertical);
+        int altoGeneral = ((jPanel1.getHeight() - ((cantidadAlto + 1) * margen))  / cantidadAlto);
+
+        //int anchoGeneral = (((jPanel1.getWidth() - ((cantidadHorizontal + 1) * margen)) - (marginLeft + marginRight)) / cantidadHorizontal);
+        int anchoGeneral = ((jPanel1.getWidth() - ((cantidadHorizontal + 1) * margen))  / cantidadHorizontal);
+
+        int marginTop = altoGeneral*margenes.getMargenArriba();
+        int marginButtom = altoGeneral*margenes.getMargenAbajo();
+        int marginLeft = anchoGeneral*margenes.getMargenIzquierda();
+        int marginRight = anchoGeneral*margenes.getMargenDerecha();
         
+       
+        int margenInitAlto = margen + marginTop;
+        int margenInitAncho = margen + marginLeft;
+
+        
+        int altoActual = margenInitAlto + (altoGeneral * 0);
+        for (int i = 0; i < habitaciones.size(); i++) {
+            int anchoActual = margenInitAncho + (anchoGeneral * i);
+
+            //for (int j = 0; j < cantidadHorizontal; j++) {
+            // anchoActual = margenInitAncho + (anchoGeneral * j);
+            JPanel panel = new JPanel();
+            panel = getPanelEstado(panel, habitaciones.get(i).getEstado());
+            panel.setBounds(anchoActual, altoActual, anchoGeneral, altoGeneral);
+            JLabel label = new JLabel(habitaciones.get(i).getNumeroHabitacion()+"");
+
+            int lenghtLabel = label.getText().length() * 3;
+            label.setBounds((panel.getWidth() / 2) - lenghtLabel, 0, panel.getWidth(), panel.getHeight());
+            panel.add(label);
+            panel.addMouseListener(this);
+            //margenInitAncho += margen;
+            jPanel1.add(panel);
+
+            //}
+            margenInitAncho += margen;
+        }
+
+        jPanel1.repaint();
+    }
+
+    private JPanel getPanelEstado(JPanel panel, int estado) {
+        if (estado == 1) {
+            panel.setBackground(new Color(1, 223, 1));
+        } else if (estado == 2) {
+            panel.setBackground(new Color(239, 127, 42));
+        } else {
+            panel.setBackground(new Color(102, 102, 102));
+        }
+
+        return panel;
     }
 
     /**
@@ -261,6 +490,8 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
         jMenuItem7 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
