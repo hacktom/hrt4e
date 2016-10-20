@@ -81,6 +81,9 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
         });
 
         setExtendedState(MAXIMIZED_BOTH);
+        //para evitar dejar solamente maximizado
+        setVisible(true);
+        setResizable(false);
 
         TareaCatalogosWorker wor = new TareaCatalogosWorker();
         wor.setOnPostExecuteListener(new TareaCatalogosWorker.OnPostExecuteListener() {
