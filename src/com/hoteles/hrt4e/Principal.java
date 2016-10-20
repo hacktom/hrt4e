@@ -174,7 +174,7 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
         addViewsVertical(margenes2a, 10, separarNumeroHabitacionesInicioFin(habitaciones,40,54,true));
         
         Margenes margenes2b = new Margenes();
-        margenes2b.setMargenArriba(16);
+        margenes2b.setMargenArriba(15);
         margenes2b.setMargenDerecha(0);
         margenes2b.setMargenAbajo(0);
         margenes2b.setMargenIzquierda(4);
@@ -190,7 +190,7 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
         addViewsVertical(margenes3a, 10, separarNumeroHabitacionesFinInicio(habitaciones,38,24,true));
         
         Margenes margenes3b = new Margenes();
-        margenes3b.setMargenArriba(16);
+        margenes3b.setMargenArriba(15);
         margenes3b.setMargenDerecha(0);
         margenes3b.setMargenAbajo(0);
         margenes3b.setMargenIzquierda(6);
