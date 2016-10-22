@@ -6,10 +6,8 @@ import java.io.Serializable;
  * Created by Tadeo-developer on 03/10/16.
  */
 
-public class Usuario implements Serializable{
+public class Usuario extends Catalogo implements Serializable{
 
-    private int id;
-    private String nombre;
     private int idRol;
     private String rol;
     private int edad;
@@ -25,22 +23,6 @@ public class Usuario implements Serializable{
            System.out.println("La edad debe ser mayo a 0 ");
        }
        else    this.edad = edad;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public int getIdRol() {
@@ -61,6 +43,6 @@ public class Usuario implements Serializable{
 
     @Override
     public String toString() {
-        return nombre;
+        return getNombre();
     }
 }

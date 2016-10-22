@@ -1,5 +1,6 @@
 package com.hoteles.hrt4e;
 
+import com.hoteles.hrt4e.models.CatalogoTipoHabitacion;
 import com.hoteles.hrt4e.models.Catalogos;
 import com.hoteles.hrt4e.models.Habitacion;
 import com.hoteles.hrt4e.models.HabitacionRenta;
@@ -56,10 +57,11 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
 
             @Override
             public void componentResized(ComponentEvent e) {
-                if (Singleton.getInstance().getHabitaciones() != null) {
+                if(Singleton.getInstance().getCatalogos()!=null && Singleton.getInstance().getCatalogos().getHabitaciones() != null){
+               
                     //addViews(MARGEN, CANTIDAD_HORIZONTAL, CANTIDAD_VERTICAL, Singleton.getInstance().getHabitaciones());
                     //addViews(MARGEN, CANTIDAD_HORIZONTAL, CANTIDAD_VERTICAL, genereateHabitacionesDummy(120));
-                    initViewsVertical(Singleton.getInstance().getHabitaciones());
+                    initViewsVertical(Singleton.getInstance().getCatalogos().getHabitaciones());
                 }
 
             }
@@ -94,12 +96,14 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
 
                     System.out.println("actualizando catalogos");
                     Catalogos catalogos = (Catalogos) object;
-                    Singleton.getInstance().setHabitaciones(catalogos.getHabitaciones());
+                    Singleton.getInstance().setCatalogos(catalogos);
+                    Singleton.getInstance().getCatalogos().setHabitaciones(catalogos.getHabitaciones());
                     MiModelo modelo = new MiModelo();
                     ArrayList<HabitacionTipo> habitacionesTipo = new ArrayList<>();
-                    habitacionesTipo.add(obtenerCantidadTipoHabitacion(1));
-                    habitacionesTipo.add(obtenerCantidadTipoHabitacion(2));
-
+                    for(CatalogoTipoHabitacion cat : Singleton.getInstance().getCatalogos().getTipoHabitaciones()){
+                        habitacionesTipo.add(obtenerCantidadTipoHabitacion(cat.getId()));
+                    }
+                    
                     modelo.habitaciones = habitacionesTipo;
                     jTable1.setModel(modelo);
                     //addViews(MARGEN, CANTIDAD_HORIZONTAL, CANTIDAD_VERTICAL, catalogos.getHabitaciones());
@@ -134,14 +138,15 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
                                 Singleton.getInstance().actualizarHabitaciones(catalogos.getHabitaciones());
                                 MiModelo modelo = new MiModelo();
                                 ArrayList<HabitacionTipo> habitacionesTipo = new ArrayList<>();
-                                habitacionesTipo.add(obtenerCantidadTipoHabitacion(1));
-                                habitacionesTipo.add(obtenerCantidadTipoHabitacion(2));
+                                for(CatalogoTipoHabitacion cat : Singleton.getInstance().getCatalogos().getTipoHabitaciones()){
+                                    habitacionesTipo.add(obtenerCantidadTipoHabitacion(cat.getId()));
+                                }
 
                                 modelo.habitaciones = habitacionesTipo;
                                 jTable1.setModel(modelo);
                                 //addViews(MARGEN, CANTIDAD_HORIZONTAL, CANTIDAD_VERTICAL, Singleton.getInstance().getHabitaciones());
                                 //addViews(MARGEN, CANTIDAD_HORIZONTAL, CANTIDAD_VERTICAL, genereateHabitacionesDummy(120));
-                                initViewsVertical(Singleton.getInstance().getHabitaciones());
+                                initViewsVertical(Singleton.getInstance().getCatalogos().getHabitaciones());
                             }
                         }
                     });
@@ -853,8 +858,11 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
                 contadorSucias++;
             }
         }
-        if (habitaciones.size() > 1) {
-            habitacionTipo.setTipo(habitaciones.get(0).getTipoHabitacionText());
+        
+        for(CatalogoTipoHabitacion cat : Singleton.getInstance().getCatalogos().getTipoHabitaciones()){
+            if(cat.getId()==tipoHabitacion){
+                habitacionTipo.setTipo(cat.getNombre());
+            }
         }
         habitacionTipo.setCantidadLimpio(contadorLimpias);
         habitacionTipo.setCantidadOcupado(contadorOcupadas);
