@@ -5,6 +5,7 @@
  */
 package com.hoteles.hrt4e.utils;
 
+import com.hoteles.hrt4e.models.Catalogos;
 import com.hoteles.hrt4e.models.Habitacion;
 import com.hoteles.hrt4e.models.Usuario;
 import java.util.ArrayList;
@@ -17,8 +18,8 @@ public class Singleton {
     private static Singleton singleton;
 
     private Usuario usuario;
-    private ArrayList<Habitacion> habitaciones;
-    private ArrayList<Usuario> usuarios;
+    private Catalogos catalogos;
+    
     
     private String macAddress;
     
@@ -43,12 +44,24 @@ public class Singleton {
         this.usuario = usuario;
     }
 
-    public ArrayList<Habitacion> getHabitaciones(){
-        return this.habitaciones;
+    public static Singleton getSingleton() {
+        return singleton;
+    }
+
+    public static void setSingleton(Singleton singleton) {
+        Singleton.singleton = singleton;
+    }
+
+    public Catalogos getCatalogos() {
+        return catalogos;
+    }
+
+    public void setCatalogos(Catalogos catalogos) {
+        this.catalogos = catalogos;
     }
     
     public Habitacion buscarNumeroHabitacion(int numero){
-        for(Habitacion habitacion: habitaciones){
+        for(Habitacion habitacion: catalogos.getHabitaciones()){
             if(habitacion.getNumeroHabitacion()==numero)
                 return habitacion;
         }
@@ -56,8 +69,8 @@ public class Singleton {
     }
     
     public int buscarIndiceNumeroHabitacion(int numero){
-        for(int i = 0;i<habitaciones.size();i++){
-            if(habitaciones.get(i).getNumeroHabitacion()==numero)
+        for(int i = 0;i<catalogos.getHabitaciones().size();i++){
+            if(catalogos.getHabitaciones().get(i).getNumeroHabitacion()==numero)
                 return i;
         }
         return -1;
@@ -67,7 +80,7 @@ public class Singleton {
 
         ArrayList<Habitacion> aux = new ArrayList<>();
 
-        for(Habitacion habitacion : habitaciones){
+        for(Habitacion habitacion : catalogos.getHabitaciones()){
             if(habitacion.getTipoHabitacion()==idTipoHabitacion){
                 aux.add(habitacion);
             }
@@ -90,35 +103,23 @@ public class Singleton {
         for(Habitacion habitacion : habitaciones){
             int indexHabitacion = buscarIndiceNumeroHabitacion(habitacion.getNumeroHabitacion());
             if(indexHabitacion>=0){
-                this.habitaciones.set(indexHabitacion,habitacion);
+                this.catalogos.getHabitaciones().set(indexHabitacion,habitacion);
             }
         }
         
         
     }
 
-    public void setHabitaciones(ArrayList<Habitacion> habitaciones){
-        this.habitaciones = habitaciones;
-    }
-
-    public ArrayList<Usuario> getUsuarios() {
-        return usuarios;
-    }
-
     public ArrayList<Usuario> getUsuariosRol(int idRol){
         ArrayList<Usuario> usuariosAux = new ArrayList<>();
 
-        for(Usuario usuario:usuarios){
+        for(Usuario usuario:catalogos.getUsuarios()){
             if(usuario.getIdRol()==idRol){
                 usuariosAux.add(usuario);
             }
         }
 
         return usuariosAux;
-    }
-
-    public void setUsuarios(ArrayList<Usuario> usuarios) {
-        this.usuarios = usuarios;
     }
 
     public String getMacAddress() {

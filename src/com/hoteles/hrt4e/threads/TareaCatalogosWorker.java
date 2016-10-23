@@ -7,6 +7,8 @@ package com.hoteles.hrt4e.threads;
 
 import com.caronte.json.JSONObject;
 import com.hoteles.hrt4e.Principal;
+import com.hoteles.hrt4e.models.Catalogo;
+import com.hoteles.hrt4e.models.CatalogoTipoHabitacion;
 import com.hoteles.hrt4e.models.Catalogos;
 import com.hoteles.hrt4e.models.Habitacion;
 import com.hoteles.hrt4e.models.Usuario;
@@ -28,7 +30,7 @@ public class TareaCatalogosWorker extends Worker {
     protected JSONObject doInBackground() throws Exception {
         String mac = Singleton.getInstance().getMacAddress();
         int idHotel = Singleton.getInstance().getIdHotel();
-        JSONObject jsonObject = WebServices.servicioCatalogos(mac,idHotel);
+        JSONObject jsonObject = WebServices.servicioCatalogos(mac, idHotel);
 
         return jsonObject;
     }
@@ -81,9 +83,16 @@ public class TareaCatalogosWorker extends Worker {
 
                         }
 
+                        
+                        
                         Catalogos catalogos = new Catalogos();
                         catalogos.setHabitaciones(habitaciones);
                         catalogos.setUsuarios(usuarios);
+                        catalogos.setEstados(getCatalogos(jsonObject.getJSONArray("catalogo_estado")));
+                        catalogos.setEstadosTransicion(getCatalogos(jsonObject.getJSONArray("catalogo_estado_transicion")));
+                        catalogos.setRoles(getCatalogos(jsonObject.getJSONArray("catalogo_rol")));
+                        catalogos.setTipoPago(getCatalogos(jsonObject.getJSONArray("catalogo_tipo_pago")));
+                        catalogos.setTipoHabitaciones(getCatalogoTipoHabitaciones(jsonObject.getJSONArray("catalogo_tipo_habitacion")));
 
                         if (onPostExecuteListener != null) {
                             onPostExecuteListener.onPostExecute(catalogos);
@@ -103,6 +112,41 @@ public class TareaCatalogosWorker extends Worker {
         } catch (ExecutionException ex) {
             Logger.getLogger(TareaCatalogosWorker.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private ArrayList<Catalogo> getCatalogos(ArrayList<JSONObject> catalogo) {
+
+        ArrayList<Catalogo> elementos = new ArrayList<>();
+
+        for (int i = 0; i < catalogo.size(); i++) {
+            JSONObject cat = catalogo.get(i);
+            Catalogo catalogoElemento = new Catalogo();
+            catalogoElemento.setId(cat.getInt("id"));
+            catalogoElemento.setNombre(cat.getString("nombre"));
+            elementos.add(catalogoElemento);
+
+        }
+        
+        return elementos;
+
+    }
+    
+    private ArrayList<CatalogoTipoHabitacion> getCatalogoTipoHabitaciones(ArrayList<JSONObject> catalogo){
+        ArrayList<CatalogoTipoHabitacion> elementos = new ArrayList<>();
+
+        for (int i = 0; i < catalogo.size(); i++) {
+            JSONObject cat = catalogo.get(i);
+            CatalogoTipoHabitacion catalogoElemento = new CatalogoTipoHabitacion();
+            catalogoElemento.setId(cat.getInt("id"));
+            catalogoElemento.setNombre(cat.getString("nombre"));
+            catalogoElemento.setCosto(cat.getDouble("costo"));
+            catalogoElemento.setCostoPersonaExtra(cat.getDouble("costo_persona_extra"));
+            catalogoElemento.setCostoHoraExtra(cat.getDouble("costo_hora_extra"));
+            elementos.add(catalogoElemento);
+
+        }
+        
+        return elementos;
     }
 
 }
