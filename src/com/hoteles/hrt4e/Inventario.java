@@ -5,6 +5,8 @@
  */
 package com.hoteles.hrt4e;
 
+import com.hoteles.hrt4e.models.ModeloCatalogoProducto;
+import com.hoteles.hrt4e.utils.Singleton;
 import javax.swing.WindowConstants;
 
 /**
@@ -18,6 +20,10 @@ public class Inventario extends javax.swing.JFrame {
      */
     public Inventario() {
         initComponents();
+        
+        ModeloCatalogoProducto modelo = new ModeloCatalogoProducto();
+        modelo.productos = Singleton.getInstance().getCatalogos().getInventario().getProductos();
+        jTable1.setModel(modelo);
     }
 
     /**

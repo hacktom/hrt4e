@@ -6,8 +6,10 @@
 package com.hoteles.hrt4e.threads;
 
 import com.caronte.json.JSONObject;
+import com.hoteles.hrt4e.models.Inventario;
 import com.hoteles.hrt4e.Principal;
 import com.hoteles.hrt4e.models.Catalogo;
+import com.hoteles.hrt4e.models.CatalogoProducto;
 import com.hoteles.hrt4e.models.CatalogoTipoHabitacion;
 import com.hoteles.hrt4e.models.Catalogos;
 import com.hoteles.hrt4e.models.Habitacion;
@@ -92,8 +94,18 @@ public class TareaCatalogosWorker extends Worker {
                         catalogos.setEstadosTransicion(getCatalogos(jsonObject.getJSONArray("catalogo_estado_transicion")));
                         catalogos.setRoles(getCatalogos(jsonObject.getJSONArray("catalogo_rol")));
                         catalogos.setTipoPago(getCatalogos(jsonObject.getJSONArray("catalogo_tipo_pago")));
+                        catalogos.setTipoProducto(getCatalogos(jsonObject.getJSONArray("catalogo_tipo_producto")));
+                        catalogos.setTipoPromocion(getCatalogos(jsonObject.getJSONArray("catalogo_tipo_promocion")));
                         catalogos.setTipoHabitaciones(getCatalogoTipoHabitaciones(jsonObject.getJSONArray("catalogo_tipo_habitacion")));
 
+                        Inventario inventario = new Inventario();
+                        inventario.setId(1);
+                        inventario.setIdHotel(1);
+                        inventario.setProductos(getCatalogoProducto(jsonObject.getJSONArray("catalogo_producto")));
+                        
+                        catalogos.setInventario(inventario);
+                      
+                        
                         if (onPostExecuteListener != null) {
                             onPostExecuteListener.onPostExecute(catalogos);
                         }
@@ -143,6 +155,25 @@ public class TareaCatalogosWorker extends Worker {
             catalogoElemento.setCostoPersonaExtra(cat.getDouble("costo_persona_extra"));
             catalogoElemento.setCostoHoraExtra(cat.getDouble("costo_hora_extra"));
             elementos.add(catalogoElemento);
+
+        }
+        
+        return elementos;
+    }
+    
+    private ArrayList<CatalogoProducto> getCatalogoProducto(ArrayList<JSONObject> catalogo){
+        ArrayList<CatalogoProducto> elementos = new ArrayList<>();
+
+        for (int i = 0; i < catalogo.size(); i++) {
+            JSONObject cat = catalogo.get(i);
+            CatalogoProducto catalogoProducto = new CatalogoProducto();
+            catalogoProducto.setId(cat.getInt("id"));
+            catalogoProducto.setIdInventario(cat.getInt("id_inventario"));
+            catalogoProducto.setIdCatalogoTipoProducto(cat.getInt("id_catalogo_tipo_producto"));
+            catalogoProducto.setNombre(cat.getString("nombre"));
+            catalogoProducto.setCosto(cat.getDouble("costo"));
+            catalogoProducto.setCantidad(cat.getInt("cantidad"));
+            elementos.add(catalogoProducto);
 
         }
         

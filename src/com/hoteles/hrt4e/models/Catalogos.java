@@ -15,7 +15,11 @@ public class Catalogos implements Serializable{
     private ArrayList<Catalogo> estadosTransicion;
     private ArrayList<Catalogo> roles;
     private ArrayList<Catalogo> tipoPago;
+    private ArrayList<Catalogo> tipoProducto;
+    private ArrayList<Catalogo> tipoPromocion;
     private ArrayList<CatalogoTipoHabitacion> tipoHabitaciones;
+    
+    private Inventario inventario;
 
     public ArrayList<Habitacion> getHabitaciones() {
         return habitaciones;
@@ -65,6 +69,24 @@ public class Catalogos implements Serializable{
         this.tipoPago = tipoPago;
     }
 
+    public ArrayList<Catalogo> getTipoProducto() {
+        return tipoProducto;
+    }
+
+    public void setTipoProducto(ArrayList<Catalogo> tipoProducto) {
+        this.tipoProducto = tipoProducto;
+    }
+
+    public ArrayList<Catalogo> getTipoPromocion() {
+        return tipoPromocion;
+    }
+
+    public void setTipoPromocion(ArrayList<Catalogo> tipoPromocion) {
+        this.tipoPromocion = tipoPromocion;
+    }
+    
+    
+
     public ArrayList<CatalogoTipoHabitacion> getTipoHabitaciones() {
         return tipoHabitaciones;
     }
@@ -72,6 +94,15 @@ public class Catalogos implements Serializable{
     public void setTipoHabitaciones(ArrayList<CatalogoTipoHabitacion> tipoHabitaciones) {
         this.tipoHabitaciones = tipoHabitaciones;
     }
+
+    public Inventario getInventario() {
+        return inventario;
+    }
+
+    public void setInventario(Inventario inventario) {
+        this.inventario = inventario;
+    }
+    
     
     
 }
