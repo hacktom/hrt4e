@@ -14,7 +14,7 @@ import javax.swing.table.TableModel;
  *
  * @author Hacktom
  */
-public class MiModelo extends AbstractTableModel {
+public class ModeloEstatusHabitaciones extends AbstractTableModel {
     private String [] estados = {"Tipo","Limpio","Ocupado","Sucio"};
    public ArrayList<HabitacionTipo> habitaciones = new ArrayList<>();
     

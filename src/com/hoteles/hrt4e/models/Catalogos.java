@@ -103,6 +103,4 @@ public class Catalogos implements Serializable{
         this.inventario = inventario;
     }
     
-    
-    
 }

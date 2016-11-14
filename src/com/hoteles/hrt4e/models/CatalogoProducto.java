@@ -5,11 +5,18 @@
  */
 package com.hoteles.hrt4e.models;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Tadeo-developer
  */
 public class CatalogoProducto extends Catalogo{
+    
+    public static final String PRODUCTO_RESTAURANT = "Restaurant";
+    public static final String PRODUCTO_FARMACIA = "Farmacia";
+    public static final String PRODUCTO_XXX = "xxx";
+    
     private int idInventario;
     private int idCatalogoTipoProducto;
     private double costo;
@@ -46,6 +53,8 @@ public class CatalogoProducto extends Catalogo{
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
+    
+    
     
     
 }

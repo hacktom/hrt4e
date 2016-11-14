@@ -5,6 +5,7 @@
  */
 package com.hoteles.hrt4e.utils;
 
+import com.hoteles.hrt4e.models.CatalogoProducto;
 import com.hoteles.hrt4e.models.Catalogos;
 import com.hoteles.hrt4e.models.Habitacion;
 import com.hoteles.hrt4e.models.Usuario;

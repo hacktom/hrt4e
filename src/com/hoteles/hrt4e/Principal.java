@@ -6,7 +6,7 @@ import com.hoteles.hrt4e.models.Habitacion;
 import com.hoteles.hrt4e.models.HabitacionRenta;
 import com.hoteles.hrt4e.models.HabitacionTipo;
 import com.hoteles.hrt4e.models.Margenes;
-import com.hoteles.hrt4e.models.MiModelo;
+import com.hoteles.hrt4e.models.ModeloEstatusHabitaciones;
 import com.hoteles.hrt4e.threads.Tarea;
 import com.hoteles.hrt4e.threads.TareaLogin;
 import com.hoteles.hrt4e.ws.WebServices;
@@ -98,7 +98,7 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
                     Catalogos catalogos = (Catalogos) object;
                     Singleton.getInstance().setCatalogos(catalogos);
                     Singleton.getInstance().getCatalogos().setHabitaciones(catalogos.getHabitaciones());
-                    MiModelo modelo = new MiModelo();
+                    ModeloEstatusHabitaciones modelo = new ModeloEstatusHabitaciones();
                     ArrayList<HabitacionTipo> habitacionesTipo = new ArrayList<>();
                     for(CatalogoTipoHabitacion cat : Singleton.getInstance().getCatalogos().getTipoHabitaciones()){
                         habitacionesTipo.add(obtenerCantidadTipoHabitacion(cat.getId()));
@@ -136,7 +136,7 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
                                 System.out.println("actualizando habitaciones");
                                 Catalogos catalogos = (Catalogos) object;
                                 Singleton.getInstance().actualizarHabitaciones(catalogos.getHabitaciones());
-                                MiModelo modelo = new MiModelo();
+                                ModeloEstatusHabitaciones modelo = new ModeloEstatusHabitaciones();
                                 ArrayList<HabitacionTipo> habitacionesTipo = new ArrayList<>();
                                 for(CatalogoTipoHabitacion cat : Singleton.getInstance().getCatalogos().getTipoHabitaciones()){
                                     habitacionesTipo.add(obtenerCantidadTipoHabitacion(cat.getId()));
@@ -690,7 +690,7 @@ public class Principal extends javax.swing.JFrame implements MouseListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        Inventario inventario = new Inventario();
+        InventarioForm inventario = new InventarioForm();
         inventario.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         inventario.setVisible(true);
         inventario.setLocationRelativeTo(null);

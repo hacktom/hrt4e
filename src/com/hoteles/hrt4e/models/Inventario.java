@@ -37,4 +37,18 @@ public class Inventario extends Catalogo{
             productos = new ArrayList<>();
         productos.add(catalogoProducto);
     }
+    
+    public ArrayList<CatalogoProducto> getProductosTipo(int idTipoProducto){
+
+        ArrayList<CatalogoProducto> aux = new ArrayList<>();
+
+        for(CatalogoProducto cat : getProductos()){
+            if(cat.getIdCatalogoTipoProducto()==idTipoProducto){
+                aux.add(cat);
+            }
+
+        }
+
+        return aux;
+    }
 }
