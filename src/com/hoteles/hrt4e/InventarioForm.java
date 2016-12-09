@@ -19,27 +19,33 @@ import javax.swing.WindowConstants;
  */
 public class InventarioForm extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Inventario
-     */
+    
+    private ModeloCatalogoProducto modeloR;
+    private ModeloCatalogoProducto modeloF;
+    private ModeloCatalogoProducto modeloX;
+    
     public InventarioForm() {
         initComponents();
 
         ArrayList<CatalogoProducto> productosR = Singleton.getInstance().getCatalogos().getInventario().getProductosTipo(1);
-        ModeloCatalogoProducto modeloR = new ModeloCatalogoProducto();
+        modeloR = new ModeloCatalogoProducto();
         modeloR.productos = productosR;
         jTable1.setModel(modeloR);
 
         ArrayList<CatalogoProducto> productosF = Singleton.getInstance().getCatalogos().getInventario().getProductosTipo(2);
-        ModeloCatalogoProducto modeloF = new ModeloCatalogoProducto();
+        modeloF = new ModeloCatalogoProducto();
         modeloF.productos = productosF;
         jTable2.setModel(modeloF);
 
         ArrayList<CatalogoProducto> productosX = Singleton.getInstance().getCatalogos().getInventario().getProductosTipo(3);
-        ModeloCatalogoProducto modeloX = new ModeloCatalogoProducto();
+        modeloX = new ModeloCatalogoProducto();
         modeloX.productos = productosX;
         jTable3.setModel(modeloX);
 
+    }
+    
+    private void refreshData(){
+    
     }
 
     /**
@@ -227,6 +233,31 @@ public class InventarioForm extends javax.swing.JFrame {
         agregarProducto.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         agregarProducto.setVisible(true);
         agregarProducto.setLocationRelativeTo(null);
+        
+        agregarProducto.setOnFormResultListener(new FormGeneral.OnFormResultListener() {
+
+            @Override
+            public void onFormResult(Object object) {
+            
+                if(object instanceof CatalogoProducto){
+                    CatalogoProducto catalogoProducto = (CatalogoProducto)object;
+                    Singleton.getInstance().getCatalogos().getInventario().addProducto(catalogoProducto);
+                    if(catalogoProducto.getIdCatalogoTipoProducto()==1){
+                        modeloR.productos.add(catalogoProducto);
+                        modeloR.fireTableDataChanged();
+                    }else if(catalogoProducto.getIdCatalogoTipoProducto()==2){
+                        modeloF.productos.add(catalogoProducto);
+                        modeloF.fireTableDataChanged();
+                    }else if(catalogoProducto.getIdCatalogoTipoProducto()==3){
+                        modeloX.productos.add(catalogoProducto);
+                        modeloX.fireTableDataChanged();
+                    }
+                    
+                }
+                
+            }
+        });
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

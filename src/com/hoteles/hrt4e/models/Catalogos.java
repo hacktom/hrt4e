@@ -84,8 +84,6 @@ public class Catalogos implements Serializable{
     public void setTipoPromocion(ArrayList<Catalogo> tipoPromocion) {
         this.tipoPromocion = tipoPromocion;
     }
-    
-    
 
     public ArrayList<CatalogoTipoHabitacion> getTipoHabitaciones() {
         return tipoHabitaciones;

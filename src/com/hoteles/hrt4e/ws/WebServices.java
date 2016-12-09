@@ -28,6 +28,8 @@ public class WebServices {
     public static final String CAMBIAR_ESTADO = "cambiar_estado.php";
     public static final String REGISTRAR_HABITACION = "registrar_habitacion.php";
     public static final String ACTUALIAZR_HABITACION_RENTA = "actualizar_habitacion_renta.php";
+    
+    public static final String AGREGAR_PRODUCTO = "desktop/agregar_producto.php";
 
     private static JSONObject jObj 	= null;
     private static String json 		= "";
@@ -132,6 +134,22 @@ public class WebServices {
         }
 
         return request(URL_SERVIDOR+REGISTRAR_HABITACION,jsonObject.toString(),true,"POST");
+    }
+    
+    public static JSONObject servicioAgregarProducto(int idInventario,int idTipoProducto,String nombre,double costo,int cantidad){
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.addPair("idInventario",idInventario);
+            jsonObject.addPair("idTipoProducto",idTipoProducto);
+            jsonObject.addPair("nombre",nombre);
+            jsonObject.addPair("costo",costo);
+            jsonObject.addPair("cantidad",cantidad);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return request(URL_SERVIDOR+AGREGAR_PRODUCTO,jsonObject.toString(),true,"POST");
     }
 
     private static JSONObject request(String requestURL, String params, boolean contentTypeJson, HashMap<String,String> headers, String method){
