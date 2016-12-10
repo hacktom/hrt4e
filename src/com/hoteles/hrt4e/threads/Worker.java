@@ -13,12 +13,23 @@ import javax.swing.SwingWorker;
  * @author Tadeo-developer
  */
 public abstract class Worker extends SwingWorker<JSONObject, Void>{
-     public interface OnPostExecuteListener {
+    public interface OnPostExecuteListener {
 
         void onPostExecute(Object object);
     }
 
+    protected String method;
     protected OnPostExecuteListener onPostExecuteListener;
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+    
+    
     
     public OnPostExecuteListener getOnPostExecuteListener() {
         return onPostExecuteListener;
@@ -27,4 +38,6 @@ public abstract class Worker extends SwingWorker<JSONObject, Void>{
     public void setOnPostExecuteListener(OnPostExecuteListener onPostExecuteListener) {
         this.onPostExecuteListener = onPostExecuteListener;
     }
+    
+    
 }

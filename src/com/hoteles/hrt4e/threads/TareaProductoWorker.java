@@ -24,9 +24,13 @@ import javax.swing.SwingWorker;
  *
  * @author Tadeo-developer
  */
-public class TareaAgregarProductoWorker extends Worker {
+public class TareaProductoWorker extends Worker {
 
     private CatalogoProducto catalogoProducto;
+    
+    public TareaProductoWorker(String method){
+        setMethod(method);
+    }
     
     public void setCatalogoProducto(CatalogoProducto catalogoProducto){
         this.catalogoProducto = catalogoProducto;
@@ -34,13 +38,14 @@ public class TareaAgregarProductoWorker extends Worker {
     @Override
     protected JSONObject doInBackground() throws Exception {
         
+        int id = catalogoProducto.getId();
         int idInventario = catalogoProducto.getIdInventario();
         int idTipoProducto = catalogoProducto.getIdCatalogoTipoProducto();
         String nombre = catalogoProducto.getNombre();
         double costo = catalogoProducto.getCosto();
         int cantidad = catalogoProducto.getCantidad();
         
-        JSONObject jsonObject = WebServices.servicioAgregarProducto(idInventario,idTipoProducto,nombre,costo,cantidad);
+        JSONObject jsonObject = WebServices.servicioAgregarProducto(getMethod(),id,idInventario,idTipoProducto,nombre,costo,cantidad);
 
         return jsonObject;
        
@@ -84,9 +89,9 @@ public class TareaAgregarProductoWorker extends Worker {
                 System.out.println("Worker jsonObject es null");
             }
         } catch (InterruptedException ex) {
-            Logger.getLogger(TareaAgregarProductoWorker.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TareaProductoWorker.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ExecutionException ex) {
-            Logger.getLogger(TareaAgregarProductoWorker.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TareaProductoWorker.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

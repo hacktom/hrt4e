@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.hoteles.hrt4e;
 
 import com.hoteles.hrt4e.models.Catalogo;
@@ -85,6 +80,11 @@ public class InventarioForm extends javax.swing.JFrame {
         });
 
         jButton2.setText("Editar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Eliminar");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -229,7 +229,16 @@ public class InventarioForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        AgregarProducto agregarProducto = new AgregarProducto();
+        int tabSelected = jTabbedPane5.getSelectedIndex();
+        CatalogoProducto cat = new CatalogoProducto();
+        if(tabSelected==0){
+            cat.setIdCatalogoTipoProducto(1);
+        }else if(tabSelected==1){
+            cat.setIdCatalogoTipoProducto(2);
+        }else {
+            cat.setIdCatalogoTipoProducto(3);
+        }
+        AccionProducto agregarProducto = new AccionProducto(1,cat);
         agregarProducto.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         agregarProducto.setVisible(true);
         agregarProducto.setLocationRelativeTo(null);
@@ -261,10 +270,109 @@ public class InventarioForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        int tabSelected = jTabbedPane5.getSelectedIndex();
+        
+        CatalogoProducto cat;
+        if(tabSelected==0){
+            cat = modeloR.productos.get(jTable1.getSelectedRow());
+        }else if(tabSelected==1){
+            cat = modeloF.productos.get(jTable2.getSelectedRow());
+        }else {
+            cat = modeloX.productos.get(jTable3.getSelectedRow());
+        }
 
+        if(cat!=null){
+            AccionProducto agregarProducto = new AccionProducto(3,cat);
+            agregarProducto.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            agregarProducto.setVisible(true);
+            agregarProducto.setLocationRelativeTo(null);
+
+            agregarProducto.setOnFormResultListener(new FormGeneral.OnFormResultListener() {
+
+                @Override
+                public void onFormResult(Object object) {
+
+                    if(object instanceof CatalogoProducto){
+                        CatalogoProducto catalogoProducto = (CatalogoProducto)object;
+                        ArrayList<CatalogoProducto> catSingleton = Singleton.getInstance().getCatalogos().getInventario().getProductos();
+                        catSingleton.remove(buscarProductoIndex(catSingleton, catalogoProducto));
+                        if(catalogoProducto.getIdCatalogoTipoProducto()==1){
+                            modeloR.productos.remove(buscarProductoIndex(modeloR.productos, catalogoProducto));
+                            modeloR.fireTableDataChanged();
+                        }else if(catalogoProducto.getIdCatalogoTipoProducto()==2){
+                            modeloF.productos.remove(buscarProductoIndex(modeloF.productos, catalogoProducto));
+                            modeloF.fireTableDataChanged();
+                        }else if(catalogoProducto.getIdCatalogoTipoProducto()==3){
+                            modeloX.productos.remove(buscarProductoIndex(modeloX.productos, catalogoProducto));
+                            modeloX.fireTableDataChanged();
+                        }
+
+                    }
+
+                }
+            });
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int tabSelected = jTabbedPane5.getSelectedIndex();
+        
+        CatalogoProducto cat;
+        if(tabSelected==0){
+            cat = modeloR.productos.get(jTable1.getSelectedRow());
+        }else if(tabSelected==1){
+            cat = modeloF.productos.get(jTable2.getSelectedRow());
+        }else {
+            cat = modeloX.productos.get(jTable3.getSelectedRow());
+        }
+        
+        if(cat!=null){
+            AccionProducto agregarProducto = new AccionProducto(2,cat);
+            agregarProducto.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            agregarProducto.setVisible(true);
+            agregarProducto.setLocationRelativeTo(null);
 
+            agregarProducto.setOnFormResultListener(new FormGeneral.OnFormResultListener() {
+
+                @Override
+                public void onFormResult(Object object) {
+
+                    if(object instanceof CatalogoProducto){
+                        CatalogoProducto catalogoProducto = (CatalogoProducto)object;
+                        ArrayList<CatalogoProducto> catSingleton = Singleton.getInstance().getCatalogos().getInventario().getProductos();
+                        catSingleton.set(buscarProductoIndex(catSingleton, catalogoProducto),catalogoProducto);
+                        if(catalogoProducto.getIdCatalogoTipoProducto()==1){
+                          
+                            modeloR.productos.set(buscarProductoIndex(modeloR.productos, catalogoProducto), catalogoProducto);
+                            modeloR.fireTableDataChanged();
+                        }else if(catalogoProducto.getIdCatalogoTipoProducto()==2){
+                    
+                            modeloF.productos.set(buscarProductoIndex(modeloF.productos, catalogoProducto), catalogoProducto);
+                            modeloF.fireTableDataChanged();
+                        }else if(catalogoProducto.getIdCatalogoTipoProducto()==3){
+                            
+                            modeloX.productos.set(buscarProductoIndex(modeloX.productos, catalogoProducto), catalogoProducto);
+                            modeloX.fireTableDataChanged();
+                        }
+
+                    }
+
+                }
+            });
+        }
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private int buscarProductoIndex(ArrayList<CatalogoProducto> lista,CatalogoProducto catalogoProducto){
+        
+        for(int i = 0;i<lista.size();i++){
+            if(lista.get(i).getId()==catalogoProducto.getId()){
+                return i;
+            }
+        }
+        return -1;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
